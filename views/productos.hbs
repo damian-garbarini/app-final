@@ -29,19 +29,18 @@
 </div>
 
 <div class="container">
-
     <div class="text-center m-5">
         <hr>
         <h1>{{titulo}}</h1>
         <hr>
     </div>
-    <table class=" table table-succets">
+    <table class=" table table-succets" id="mytable">
         <thead>
             <tr>
                 <th>ID producto</th>
                 <th>Nombre</th>
                 <th>Precio</th>
-                <th>Descripción</th>
+                <th>Acciones del administrador</th>
             </tr>
         </thead>
 
@@ -51,10 +50,100 @@
                 <td>{{idProducto}}</td>
                 <td>{{nombre}}</td>
                 <td>{{precio}}</td>
-                <td>{{descripcion}}</td>
+                <td>
+                  <a href="javascript:void(0)" class="btn btn-info edit" data-id="{{idProducto}}" data-producto-nombre="{{nombre}}" data-producto-precio="{{precio}}">
+                    Editar producto
+                    </a>
+                  <a href="javascript:void(0)" class="btn btn-danger delete" data-id="{{idProducto}}">
+                    Borrar producto
+                    </a>
+                </td>
             </tr>
             {{/each}}
         </tbody>
     </table>
+</div>  
+
+<form action="/update" method="post">
+<div>
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      </div>
+      <div class="modal-body">
+        <form>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" placeholder="Nombre">
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Precio</label>
+                <input type="number" class="form-control" name="precio" placeholder="Precio">
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <input type="text" name="id" class="idProducto">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Actualizar</button>
+      </div>
+    </div>
+  </div>
 </div>
+</div>
+<form>
+        <form id="add-row-form" action="/delete" method="post">
+            <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel">Borrar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <strong>¿Estás seguro de borrar este elemento?</strong>
+                    </div>
+                    <div class="modal-footer">
+                    <input type="hidden" name="idProducto" class="form-control idProducto2" required>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#my-modal" aria-label="Close"></button>
+                        <button type="submit" class="btn btn-success">Eliminar</button>
+                    </div>
+                        </div>
+                </div>
+            </div>
+        </form>
+</form>
+
+<script src="/assets/jquery.js"></script>
+
+
+
+
+
+
+<script>
+$(document).ready(function(){
+    //Mostrar datos al modal para editar registro
+    $('#mytable').on('click', '.edit', function(){
+        let idProducto= $(this).data('id');
+        let nombre = $(this).data('nombre');
+        let precio = $(this).data('precio');
+        $('#EditModal').modal('show');
+        $('.nombre').val(nombre);
+        $('.precio').val(precio);
+        $('.id').val(idProducto);
+    })
+    // Modal DELETE    
+    $('#mytable').on('click', '.delete', function(){
+        let idProducto = $(this).data('id');
+        $('#DeleteModal').modal('show');
+        $('.idProducto2').val(idproducto);
+    })
+})
+</script>
 
